@@ -1,0 +1,25 @@
+CURRENT PLAYER:{{currentPlayer}}
+
+<ng-container *ngIf="gameWin">
+  <h2>
+    WINNER IS:{{currentPlayer}}
+  </h2>
+  <button (click)="resetGame()">Reset</button>
+</ng-container>
+
+<table>
+  <tr>
+    <td><button (click)="placeToken(0)">Click</button></td>
+    <td><button (click)="placeToken(1)">Click</button></td>
+    <td><button (click)="placeToken(2)">Click</button></td>
+    <td><button (click)="placeToken(3)">Click</button></td>
+    <td><button (click)="placeToken(4)">Click</button></td>
+    <td><button (click)="placeToken(5)">Click</button></td>
+    <td><button (click)="placeToken(6)">Click</button></td>
+  </tr>
+  <tr *ngFor="let board_row of board; let x = index" >
+    <td *ngFor="let cell of board_row; let y = index" [ngStyle]="{'background-color':setTokenColour(x,y) }">
+      {{ x }},{{y}}
+    </td>
+  </tr>
+</table>
