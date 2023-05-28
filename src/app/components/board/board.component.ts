@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {Token} from "../../enums/token";
 
 @Component({
@@ -9,29 +9,68 @@ import {Token} from "../../enums/token";
 export class BoardComponent implements OnInit {
   board = [[2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2]];
   playerColour: number = Token.Red;
-  player1Name: string = 'player 1';
-  player2Name: string = 'player 2'
-  currentPlayer: string = this.player1Name;
+  @Input() player1Name!: string;
+  @Input() player2Name!: string;
+  @Input() myName!: string;
+  @Input() dataChannel!:RTCDataChannel;
+  @Input() peerConnection!: RTCPeerConnection;
+
+  currentPlayer!: string;
   gameWin = false;
 
-  constructor() {
+  constructor(private cdr:ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
+    this.currentPlayer=this.player1Name;
+    console.log("current player",this.currentPlayer);
+    console.log("player 1 player",this.player1Name);
+    console.log("player 2 player",this.player2Name);
+    console.log("what is my name",this.myName);
+
+
+    this.dataChannel.onerror = (error)=> {
+      console.log("Error occured on datachannel:", error);
+    };
+
+    this.dataChannel.onmessage=(event)=>{
+      console.log("board message", event.data);
+      const y=event.data;
+      for (let i = 5; i >= 0 && y < 7; i--) {
+        const x = i;
+        if (this.board[x][y] === Token.White) {
+          this.board[x][y] = this.playerColour;
+          this.cdr.detectChanges();
+          this.checkWin(x, y);
+          if (!this.gameWin) {
+            this.togglePlayer();
+          }
+          this.cdr.detectChanges();
+          break;
+        }
+      }
+    };
+
   }
 
   placeToken(y: number):void {
+    if(this.currentPlayer!=this.myName)
+      return;
     if (this.gameWin) {
       return;
     }
+    //send data to other party
+    this.dataChannel.send(String(y));
     for (let i = 5; i >= 0 && y < 7; i--) {
       const x = i;
       if (this.board[x][y] === Token.White) {
         this.board[x][y] = this.playerColour;
+        this.cdr.detectChanges();
         this.checkWin(x, y);
         if (!this.gameWin) {
           this.togglePlayer();
         }
+        this.cdr.detectChanges();
         break;
       }
     }

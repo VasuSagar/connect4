@@ -1,8 +1,10 @@
-CURRENT PLAYER:{{currentPlayer}}
+<div [style.color]="playerColour==0 ? 'yellow' : 'red'" style="display: flex;
+  justify-content: center;
+  align-items: center;">CURRENT PLAYER:{{currentPlayer}}</div>
 
 <ng-container *ngIf="gameWin">
   <h2>
-    WINNER IS:{{currentPlayer}}
+    WINNER IS : {{currentPlayer}}
   </h2>
   <button (click)="resetGame()">Reset</button>
 </ng-container>
@@ -19,7 +21,7 @@ CURRENT PLAYER:{{currentPlayer}}
   </tr>
   <tr *ngFor="let board_row of board; let x = index" >
     <td *ngFor="let cell of board_row; let y = index" [ngStyle]="{'background-color':setTokenColour(x,y) }">
-      {{ x }},{{y}}
+
     </td>
   </tr>
 </table>

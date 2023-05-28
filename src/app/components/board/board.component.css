@@ -1,7 +1,18 @@
+table {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 td {
   padding: 0;
-  height: 120px;
-  width: 120px;
+  height: 110px;
+  width: 110px;
   font-size: 64px;
   border: 2px solid black;
+}
+
+td > button {
+  height: 120px;
+  width: 120px;
 }

@@ -1,0 +1,53 @@
+<div class="row">
+  <ng-container *ngIf="error">
+    <h1 style="color: red">{{errorMessage}}</h1>
+    <button type="button" (click)="closeError()">Close err</button>
+  </ng-container>
+
+  <div class="column left">
+    <h2>Logged In Users</h2>
+    <div *ngFor="let user of loggedInUsers" (click)="recipentName=user.userName">
+      ID:{{user.id}}
+      <br>
+      userName:{{user.userName}}
+      <br>
+    </div>
+  </div>
+  <div class="column right">
+    <h2>Game</h2>
+    <ng-container *ngIf="!isLoggedIn;else afterLogin">
+      Username:  <input [(ngModel)]="userName"
+                        placeholder="Enter username">
+      <br>
+      <button type="button" (click)="login()">
+        Login to server</button>
+    </ng-container>
+
+    <ng-template #afterLogin>
+      <ng-container *ngIf="!isDataChannelCreated">
+        <h3>Padharo {{userName}}</h3>
+        Recipent UserName:<input [(ngModel)]="recipentName"
+                                 placeholder="Enter username">
+
+        <button type="button" (click)="connectWithUser()">
+          Connect with user</button>
+      </ng-container>
+    </ng-template>
+    <div *ngIf="isDataChannelCreated">
+<!--     Enter message:<input [(ngModel)]="messageText"-->
+<!--                               placeholder="Enter Message">-->
+<!--      <button type="button" (click)="sendMessageToUser()">-->
+<!--        Send message</button>-->
+
+      <app-multiplayer [currentUserName]="currentUserName"
+                       [dataChannel]="dataChannel"
+                       [peerConnection]="peerConnection"
+                       [userName]="userName"
+                       [amIReceiver]="amIReceiver"
+      ></app-multiplayer>
+
+
+
+    </div>
+  </div>
+</div>

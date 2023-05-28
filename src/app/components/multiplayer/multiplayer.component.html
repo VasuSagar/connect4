@@ -1,1 +1,17 @@
-<p>multiplayer works!</p>
+Your name:<h2>{{userName}}</h2>
+
+<span>Other players name:<h3>{{currentUserName}}</h3></span>
+
+<!--Enter message:<input [(ngModel)]="messageText"-->
+<!--                     placeholder="Enter Message">-->
+<!--<button type="button" (click)="sendMessageToUser()">-->
+<!--  Send message</button>-->
+
+
+<app-board [player1Name]="userName"
+           [player2Name]="currentUserName"
+           [myName]="myName"
+           [dataChannel]="dataChannel"
+           [peerConnection]="peerConnection"
+
+></app-board>
